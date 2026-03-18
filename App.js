@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./screens/HomeScreen";
+import BlogDetail from "./screens/BlogDetail";
 import ProductDetail from "./screens/ProductDetail";
 
 const Stack = createNativeStackNavigator();
@@ -10,38 +11,20 @@ const Stack = createNativeStackNavigator();
 const products = [
   {
     id: 1,
-    title: "Smart Ring",
-    description: "Een slimme ring voor gezondheid, slaap en dagelijkse tracking.",
-    price: "EUR 299",
+    title: "Nova X1 Earbuds",
+    description: "Noise-cancelling earbuds met spatial audio en ultra-low latency.",
+    price: "EUR 179",
     details:
-      "Volg je slaap, hartslag en activiteit op in een compact ontwerp dat de hele dag comfortabel blijft.",
+      "De Nova X1 combineert adaptive noise cancelling, transparantiemodus en een batterijduur tot 32 uur met case. Ideaal voor onderweg, calls en mobiel gamen.",
     image: require("./assets/ring.png"),
   },
   {
     id: 2,
-    title: "Health Ring Pro",
-    description: "Premium model met extra inzichten voor herstel en prestaties.",
-    price: "EUR 349",
+    title: "Pulse Watch GT",
+    description: "Slimme smartwatch met AMOLED-display, GPS en health tracking.",
+    price: "EUR 249",
     details:
-      "Geeft uitgebreidere analyses van herstel, inspanning en dagelijkse gewoontes voor een actiever leven.",
-    image: require("./assets/ring.png"),
-  },
-  {
-    id: 3,
-    title: "Smart Ring Lite",
-    description: "Lichter instapmodel met focus op comfort en basisstatistieken.",
-    price: "EUR 199",
-    details:
-      "Ideaal als eerste slimme ring voor stappen, slaap en meldingen zonder ingewikkelde instellingen.",
-    image: require("./assets/ring.png"),
-  },
-  {
-    id: 4,
-    title: "Sport Ring X",
-    description: "Stevig model voor sporters die activiteit en herstel willen meten.",
-    price: "EUR 329",
-    details:
-      "Ontworpen voor dagelijks sporten met sterke batterijduur en duidelijke inzichten in je trainingsbelasting.",
+      "De Pulse Watch GT geeft meldingen, hartslag, slaapinzichten en workout-modes in een strak horloge dat vlot synchroniseert met je smartphone.",
     image: require("./assets/ring.png"),
   },
 ];
@@ -49,17 +32,29 @@ const products = [
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: "#07111f" },
+          headerTintColor: "#f5fbff",
+          headerShadowVisible: false,
+          contentStyle: { backgroundColor: "#07111f" },
+        }}
+      >
         <Stack.Screen
           name="Home"
           component={HomeScreen}
           initialParams={{ products }}
-          options={{ title: "Onze modellen" }}
+          options={{ title: "Volt Market" }}
         />
         <Stack.Screen
           name="Details"
           component={ProductDetail}
-          options={{ title: "Product details" }}
+          options={{ title: "Device Details" }}
+        />
+        <Stack.Screen
+          name="BlogDetail"
+          component={BlogDetail}
+          options={{ title: "Blog" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

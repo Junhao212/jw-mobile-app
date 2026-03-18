@@ -1,5 +1,5 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   View,
   Text,
@@ -7,39 +7,43 @@ import {
   StyleSheet,
   Image,
   Pressable,
-} from 'react-native';
+} from "react-native";
 
 const ProductDetail = ({ route, navigation }) => {
   const { product } = route.params || {};
+  const [quantity, setQuantity] = useState(1);
+
+  const decreaseQuantity = () => setQuantity((current) => Math.max(1, current - 1));
+  const increaseQuantity = () => setQuantity((current) => current + 1);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
 
       <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text style={styles.backText}>Terug</Text>
       </Pressable>
 
       <Image
-        source={product?.image || require('../assets/ring.png')}
+        source={product?.image || require("../assets/ring.png")}
         style={styles.image}
       />
 
       <View style={styles.card}>
-        <Text style={styles.label}>Product details</Text>
-        <Text style={styles.title}>{product?.title || 'Smart Ring'}</Text>
-        <Text style={styles.price}>{product?.price || 'EUR 299'}</Text>
+        <Text style={styles.label}>Device overview</Text>
+        <Text style={styles.title}>{product?.title || "Tech gadget"}</Text>
+        <Text style={styles.price}>{product?.price || "EUR 199"}</Text>
 
         <Text style={styles.sectionTitle}>Beschrijving</Text>
         <Text style={styles.description}>
-          {product?.description || 'Slimme ring voor gezondheid en tracking'}
+          {product?.description || "Compacte gadget met slimme features."}
         </Text>
 
         <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>Alle details</Text>
+          <Text style={styles.infoTitle}>Specs & highlights</Text>
           <Text style={styles.infoText}>
             {product?.details ||
-              'Dit model helpt je je gezondheid en dagelijkse activiteit eenvoudig op te volgen.'}
+              "Ontworpen voor dagelijkse tech-liefhebbers die stijl en prestaties willen combineren."}
           </Text>
         </View>
 
@@ -47,20 +51,31 @@ const ProductDetail = ({ route, navigation }) => {
           <Text style={styles.quantityLabel}>Aantal</Text>
 
           <View style={styles.quantityControls}>
-            <View style={styles.quantityButton}>
+            <Pressable style={styles.quantityButton} onPress={decreaseQuantity}>
               <Text style={styles.quantityButtonText}>-</Text>
-            </View>
+            </Pressable>
 
-            <Text style={styles.quantityText}>1</Text>
+            <Text style={styles.quantityValue}>{quantity}</Text>
 
-            <View style={styles.quantityButton}>
+            <Pressable style={styles.quantityButton} onPress={increaseQuantity}>
               <Text style={styles.quantityButtonText}>+</Text>
-            </View>
+            </Pressable>
+          </View>
+        </View>
+
+        <View style={styles.statsRow}>
+          <View style={styles.statCard}>
+            <Text style={styles.statLabel}>Battery</Text>
+            <Text style={styles.statValue}>All day</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statLabel}>Sync</Text>
+            <Text style={styles.statValue}>Instant</Text>
           </View>
         </View>
 
         <Pressable style={styles.buyButton}>
-          <Text style={styles.buyButtonText}>Toevoegen</Text>
+          <Text style={styles.buyButtonText}>Add to cart</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -70,134 +85,159 @@ const ProductDetail = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4ede6',
+    backgroundColor: "#07111f",
   },
   content: {
     padding: 18,
     paddingBottom: 36,
   },
   backButton: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#2f241f',
+    alignSelf: "flex-start",
+    backgroundColor: "#102139",
     paddingHorizontal: 18,
     paddingVertical: 10,
     borderRadius: 14,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#1a3658",
   },
   backText: {
-    color: '#fffaf5',
-    textAlign: 'center',
-    fontWeight: '700',
+    color: "#d9ecff",
+    textAlign: "center",
+    fontWeight: "700",
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 260,
     borderRadius: 24,
     marginBottom: 18,
+    resizeMode: "contain",
+    backgroundColor: "#0c1b30",
   },
   card: {
-    backgroundColor: '#fffaf5',
+    backgroundColor: "#0c1b30",
     padding: 20,
     borderRadius: 24,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 4,
+    borderWidth: 1,
+    borderColor: "#173250",
   },
   label: {
-    color: '#b85c38',
+    color: "#57d1ff",
     fontSize: 13,
-    fontWeight: '800',
-    textTransform: 'uppercase',
+    fontWeight: "800",
+    textTransform: "uppercase",
     marginBottom: 8,
     letterSpacing: 0.8,
   },
   title: {
-    color: '#2f241f',
+    color: "#f5fbff",
     fontSize: 30,
-    fontWeight: '800',
+    fontWeight: "900",
     marginBottom: 8,
   },
   price: {
-    color: '#b85c38',
-    fontWeight: '800',
+    color: "#57d1ff",
+    fontWeight: "800",
     fontSize: 20,
     marginBottom: 18,
   },
   sectionTitle: {
-    color: '#2f241f',
+    color: "#f5fbff",
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: 6,
   },
   description: {
-    color: '#6c5e56',
+    color: "#90a4bf",
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 16,
   },
   infoBox: {
-    backgroundColor: '#f2e4d7',
+    backgroundColor: "#081423",
     borderRadius: 18,
     padding: 15,
     marginBottom: 18,
   },
   infoTitle: {
-    fontWeight: '800',
+    fontWeight: "800",
     fontSize: 16,
-    color: '#2f241f',
+    color: "#f5fbff",
     marginBottom: 6,
   },
   infoText: {
-    color: '#6c5e56',
+    color: "#90a4bf",
     lineHeight: 21,
     fontSize: 14,
   },
   quantityBox: {
-    backgroundColor: '#f8f1ea',
+    backgroundColor: "#081423",
     borderRadius: 18,
     padding: 15,
     marginBottom: 18,
   },
   quantityLabel: {
-    color: '#2f241f',
+    color: "#f5fbff",
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: 10,
   },
   quantityControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   quantityButton: {
-    backgroundColor: '#2f241f',
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#102139",
+    width: 46,
+    height: 46,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#1a3658",
   },
   quantityButtonText: {
-    color: '#fffaf5',
-    fontSize: 20,
-    fontWeight: '800',
+    color: "#f5fbff",
+    fontSize: 24,
+    fontWeight: "800",
+    lineHeight: 26,
   },
-  quantityText: {
-    color: '#2f241f',
-    fontSize: 20,
-    fontWeight: '800',
+  quantityValue: {
+    color: "#f5fbff",
+    fontSize: 22,
+    fontWeight: "900",
+  },
+  statsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 18,
+  },
+  statCard: {
+    width: "48%",
+    backgroundColor: "#081423",
+    borderRadius: 16,
+    padding: 15,
+  },
+  statLabel: {
+    color: "#6f88aa",
+    fontSize: 12,
+    marginBottom: 6,
+  },
+  statValue: {
+    color: "#f5fbff",
+    fontSize: 18,
+    fontWeight: "800",
   },
   buyButton: {
-    backgroundColor: '#b85c38',
+    backgroundColor: "#57d1ff",
     paddingVertical: 14,
     borderRadius: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buyButtonText: {
-    color: '#fffaf5',
-    fontWeight: '800',
+    color: "#07111f",
+    fontWeight: "800",
     fontSize: 15,
   },
 });
