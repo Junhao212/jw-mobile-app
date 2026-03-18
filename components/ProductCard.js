@@ -1,83 +1,85 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ProductCard() {
+export default function ProductCard({ title, description, price, image, details }) {
   const navigation = useNavigation();
 
   return (
     <View style={styles.card}>
       <Image
-        source={require("../assets/ring.png")}
+        source={image || require('../assets/ring.png')}
         style={styles.image}
       />
 
-      <Text style={styles.title}>Smart Ring</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.price}>{price}</Text>
 
-      <Text style={styles.description}>
-        Slimme ring voor gezondheid en tracking
-      </Text>
-
-      <Text style={styles.price}>€299</Text>
-
-      <Pressable
-        style={styles.button}
-        onPress={() =>
-          navigation.navigate("Details", {
-            title: "Smart Ring",
-            description: "Slimme ring voor gezondheid en tracking",
-            price: "€299",
-            image: require("../assets/ring.png"),
-          })
-        }
-      >
-        <Text style={styles.buttonText}>Bekijk product</Text>
-      </Pressable>
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate('Details', {
+              product: { title, description, price, image, details },
+            })
+          }
+        >
+          <Text style={styles.buttonText}>Bekijk product</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#f2f2f2",
-    padding: 15,
-    borderRadius: 12,
-    width: 160,
-    marginBottom: 20,
+    backgroundColor: '#fffaf5',
+    borderRadius: 22,
+    width: '48%',
+    marginBottom: 18,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
-
   image: {
-    width: "100%",
-    height: 120,
-    borderRadius: 10,
-    marginBottom: 10,
+    width: '100%',
+    height: 150,
   },
-
+  content: {
+    padding: 14,
+  },
   title: {
-    fontWeight: "bold",
-    fontSize: 16,
+    fontWeight: '800',
+    fontSize: 17,
+    color: '#2f241f',
+    marginBottom: 6,
   },
-
   description: {
-    color: "gray",
-    marginVertical: 5,
-  },
-
-  price: {
-    color: "red",
-    fontWeight: "bold",
+    color: '#6d5f56',
+    fontSize: 13,
+    lineHeight: 18,
+    minHeight: 54,
     marginBottom: 10,
   },
-
-  button: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 8,
+  price: {
+    color: '#b85c38',
+    fontWeight: '800',
+    fontSize: 16,
+    marginBottom: 12,
   },
-
+  button: {
+    backgroundColor: '#2f241f',
+    paddingVertical: 11,
+    borderRadius: 12,
+  },
   buttonText: {
-    color: "white",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: '#fffaf5',
+    textAlign: 'center',
+    fontWeight: '700',
+    fontSize: 13,
   },
 });
