@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const BlogDetail = ({ route }) => {
   const { blog } = route.params || {};
@@ -10,6 +10,9 @@ const BlogDetail = ({ route }) => {
       <StatusBar style="light" />
 
       <View style={styles.hero}>
+        {blog?.image ? (
+          <Image source={{ uri: blog.image }} style={styles.image} />
+        ) : null}
         <Text style={styles.tag}>{blog?.tag || "Blog"}</Text>
         <Text style={styles.title}>{blog?.title || "Tech artikel"}</Text>
         <Text style={styles.excerpt}>
@@ -52,6 +55,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#173250",
     marginBottom: 18,
+  },
+  image: {
+    width: "100%",
+    height: 220,
+    borderRadius: 16,
+    marginBottom: 16,
+    backgroundColor: "#1f2937",
   },
   tag: {
     color: "#57d1ff",

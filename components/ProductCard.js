@@ -2,7 +2,14 @@ import React from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-export default function ProductCard({ title, description, price, image, details }) {
+export default function ProductCard({
+  title,
+  description,
+  price,
+  image,
+  details,
+  onPress,
+}) {
   const navigation = useNavigation();
 
   return (
@@ -23,10 +30,12 @@ export default function ProductCard({ title, description, price, image, details 
 
         <Pressable
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Details", {
-              product: { title, description, price, image, details },
-            })
+          onPress={
+            onPress ||
+            (() =>
+              navigation.navigate("Details", {
+                product: { title, description, price, image, details },
+              }))
           }
         >
           <Text style={styles.buttonText}>Open details</Text>
