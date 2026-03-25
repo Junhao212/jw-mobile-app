@@ -21,18 +21,9 @@ const BlogDetail = ({ route }) => {
       </View>
 
       <View style={styles.article}>
-        <Text style={styles.heading}>Waarom dit belangrijk is</Text>
+        <Text style={styles.heading}>Artikel</Text>
         <Text style={styles.paragraph}>
-          Moderne gadget-shops werken beter wanneer producten worden ondersteund
-          door duidelijke content. Blogs helpen bezoekers sneller begrijpen welk
-          toestel past bij hun gebruik, budget en dagelijkse routine.
-        </Text>
-
-        <Text style={styles.heading}>Waarop letten</Text>
-        <Text style={styles.paragraph}>
-          Kijk naar batterijduur, comfort, ecosysteem, notificaties en hoe goed
-          een device past bij werk, sport of reizen. Een goede mix van specs en
-          praktische uitleg maakt de shop sterker.
+          {blog?.body || "Geen extra bloginhoud beschikbaar."}
         </Text>
       </View>
     </ScrollView>

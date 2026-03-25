@@ -8,14 +8,17 @@ export default function ProductCard({
   price,
   image,
   details,
+  category,
   onPress,
 }) {
   const navigation = useNavigation();
+  const categoryLabel = (category || "Gadgets").toUpperCase();
+  const categoryOverline = `Featured ${category || "tech"}`;
 
   return (
     <View style={styles.card}>
       <View style={styles.visualWrap}>
-        <Text style={styles.visualTag}>GADGET</Text>
+        <Text style={styles.visualTag}>{categoryLabel}</Text>
         <Image
           source={image || require("../assets/ring.png")}
           style={styles.image}
@@ -23,7 +26,7 @@ export default function ProductCard({
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.overline}>Featured tech</Text>
+        <Text style={styles.overline}>{categoryOverline}</Text>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
         <Text style={styles.price}>{price}</Text>
@@ -34,7 +37,7 @@ export default function ProductCard({
             onPress ||
             (() =>
               navigation.navigate("Details", {
-                product: { title, description, price, image, details },
+                product: { title, description, price, image, details, category },
               }))
           }
         >

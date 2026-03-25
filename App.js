@@ -44,7 +44,7 @@ export default function App() {
           name="Home"
           component={HomeScreen}
           initialParams={{ products }}
-          options={{ title: "Volt Market" }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Details"
