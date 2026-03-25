@@ -7,9 +7,9 @@ import {
   ScrollView,
   Switch,
   TextInput,
-  Pressable,
-  Image,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import BlogCard from "../components/BlogCard";
 import ProductCard from "../components/ProductCard";
 
 const getImageUrl = (fieldData = {}) => {
@@ -32,6 +32,7 @@ const HomeScreen = ({ navigation }) => {
   const [products, setProducts] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [isEnabled, setIsEnabled] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
@@ -53,6 +54,10 @@ const HomeScreen = ({ navigation }) => {
             subtitle: item.product.fieldData.description,
             price: (item.skus[0]?.fieldData.price.value || 0) / 100,
             image: { uri: item.skus[0]?.fieldData["main-image"]?.url },
+            category:
+              item.product.fieldData.category?.[0] === "699efb8fb33f0d8de566e3b3"
+                ? "gadgets"
+                : "Onbekende categorie",
           }))
         );
       })
@@ -91,6 +96,17 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.heading}>Our offer</Text>
       <TextInput placeholder="Search a product..." style={styles.input} />
+      <View style={styles.pickerWrap}>
+        <Picker
+          selectedValue={selectedCategory}
+          onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+          dropdownIconColor="#000"
+          style={styles.picker}
+        >
+          <Picker.Item label="Alle categorieen" value="" />
+          <Picker.Item label="gadgets" value="gadgets" />
+        </Picker>
+      </View>
       <View
         style={{
           flexDirection: "row",
@@ -112,7 +128,13 @@ const HomeScreen = ({ navigation }) => {
         />
       </View>
       <ScrollView style={styles.container} contentContainerStyle={styles.list}>
-        {products.map((product) => (
+        {products
+          .filter(
+            (product) =>
+              selectedCategory === "" ||
+              product.category === selectedCategory
+          )
+          .map((product) => (
           <ProductCard
             key={product.id}
             title={product.title}
@@ -127,18 +149,14 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.blogHeading}>Latest blogs</Text>
 
           {blogs.map((blog) => (
-            <Pressable
+            <BlogCard
               key={blog.id}
-              style={styles.blogCard}
+              tag={blog.tag}
+              title={blog.title}
+              excerpt={blog.excerpt}
+              image={blog.image}
               onPress={() => navigation.navigate("BlogDetail", { blog })}
-            >
-              {blog.image ? (
-                <Image source={{ uri: blog.image }} style={styles.blogImage} />
-              ) : null}
-              <Text style={styles.blogTag}>{blog.tag}</Text>
-              <Text style={styles.blogTitle}>{blog.title}</Text>
-              <Text style={styles.blogExcerpt}>{blog.excerpt}</Text>
-            </Pressable>
+            />
           ))}
         </View>
       </ScrollView>
@@ -179,6 +197,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
   },
+  pickerWrap: {
+    marginBottom: 12,
+    backgroundColor: "#fff",
+    marginHorizontal: 0,
+    borderRadius: 4,
+  },
+  picker: {
+    color: "#000",
+    backgroundColor: "#fff",
+  },
   blogSection: {
     width: "100%",
     marginTop: 16,
@@ -188,39 +216,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     marginBottom: 12,
-  },
-  blogCard: {
-    backgroundColor: "#111827",
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: "#1f2937",
-  },
-  blogImage: {
-    width: "100%",
-    height: 170,
-    borderRadius: 12,
-    marginBottom: 12,
-    backgroundColor: "#1f2937",
-  },
-  blogTag: {
-    color: "#81b0ff",
-    fontSize: 12,
-    fontWeight: "700",
-    textTransform: "uppercase",
-    marginBottom: 6,
-  },
-  blogTitle: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "700",
-    marginBottom: 6,
-  },
-  blogExcerpt: {
-    color: "#cbd5e1",
-    fontSize: 14,
-    lineHeight: 20,
   },
 });
 
