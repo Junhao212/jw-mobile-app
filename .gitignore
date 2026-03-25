@@ -1,4 +1,6 @@
 node_modules/
+.env
+.env.local
 .gitignore_backup/
 .expo/
 .expo-shared/

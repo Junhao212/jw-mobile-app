@@ -28,8 +28,10 @@ const getImageUrl = (fieldData = {}) => {
   return possibleImage?.url || null;
 };
 
-const HomeScreen = ({ navigation }) => {
-  const [products, setProducts] = useState([]);
+const WEBFLOW_TOKEN = process.env.EXPO_PUBLIC_WEBFLOW_TOKEN;
+
+const HomeScreen = ({ navigation, route }) => {
+  const [products, setProducts] = useState(route.params?.products ?? []);
   const [blogs, setBlogs] = useState([]);
   const [isEnabled, setIsEnabled] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -37,11 +39,15 @@ const HomeScreen = ({ navigation }) => {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   useEffect(() => {
+    if (!WEBFLOW_TOKEN) {
+      return;
+    }
+
     fetch(
       "https://api.webflow.com/v2/sites/698c7fdc4b1384bc81c91304/products",
       {
         headers: {
-          Authorization: "Bearer 3cbb40de0df9e12bd3be24b4fdc7a30bd544bbdcf69c32fce84b0a28a4716b83",
+          Authorization: `Bearer ${WEBFLOW_TOKEN}`,
         },
       }
     )
@@ -65,11 +71,15 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    if (!WEBFLOW_TOKEN) {
+      return;
+    }
+
     fetch(
       "https://api.webflow.com/v2/collections/699efb571075dc4582bf4f32/items",
       {
         headers: {
-          Authorization: "Bearer 3cbb40de0df9e12bd3be24b4fdc7a30bd544bbdcf69c32fce84b0a28a4716b83",
+          Authorization: `Bearer ${WEBFLOW_TOKEN}`,
         },
       }
     )
