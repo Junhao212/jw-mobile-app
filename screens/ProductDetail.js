@@ -7,11 +7,17 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  Button,
 } from "react-native";
 
 const ProductDetail = ({ route, navigation }) => {
   const { product } = route.params || {};
   const [quantity, setQuantity] = useState(1);
+  const productPrice =
+    typeof product?.price === "number"
+      ? product.price
+      : Number(String(product?.price || "0").replace(/[^0-9.,]/g, "").replace(",", "."));
+  const totalPrice = Number.isFinite(productPrice) ? productPrice * quantity : 0;
 
   const decreaseQuantity = () => setQuantity((current) => Math.max(1, current - 1));
   const increaseQuantity = () => setQuantity((current) => current + 1);
@@ -61,6 +67,10 @@ const ProductDetail = ({ route, navigation }) => {
               <Text style={styles.quantityButtonText}>+</Text>
             </Pressable>
           </View>
+
+          <Text style={styles.totalText}>
+            Totaal: ${totalPrice.toFixed(2)}
+          </Text>
         </View>
 
         <View style={styles.statsRow}>
@@ -77,6 +87,14 @@ const ProductDetail = ({ route, navigation }) => {
         <Pressable style={styles.buyButton}>
           <Text style={styles.buyButtonText}>Add to cart</Text>
         </Pressable>
+
+        <View style={styles.helpButton}>
+          <Button
+            title="Vraag advies"
+            color="#57d1ff"
+            onPress={() => console.log("Advies gevraagd voor", product?.title)}
+          />
+        </View>
       </View>
     </ScrollView>
   );
@@ -208,6 +226,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "900",
   },
+  totalText: {
+    color: "#57d1ff",
+    fontSize: 16,
+    fontWeight: "800",
+    marginTop: 14,
+  },
   statsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -239,6 +263,9 @@ const styles = StyleSheet.create({
     color: "#07111f",
     fontWeight: "800",
     fontSize: 15,
+  },
+  helpButton: {
+    marginTop: 12,
   },
 });
 

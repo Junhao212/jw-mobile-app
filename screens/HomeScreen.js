@@ -40,6 +40,7 @@ const PRODUCT_SORT_LABELS = {
   priceLow: "Prijs laag-hoog",
   priceHigh: "Prijs hoog-laag",
   name: "Naam A-Z",
+  nameDesc: "Naam Z-A",
 };
 
 const BLOG_SORT_LABELS = {
@@ -321,6 +322,10 @@ const HomeScreen = ({ navigation }) => {
 
       if (productSort === "name") {
         return left.title.localeCompare(right.title);
+      }
+
+      if (productSort === "nameDesc") {
+        return right.title.localeCompare(left.title);
       }
 
       if (left.onSale !== right.onSale) {
